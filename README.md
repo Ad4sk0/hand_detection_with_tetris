@@ -57,7 +57,7 @@ from "default" hand position, count in pixel distance this time.
 The "default" hand position is calculated dynamically, so that the user does not have to move back their hand to the 
 centre of the screen after each gesture, which strongly reduces unintentional detections.
 
-This enables to the detection mechanism to be triggered by dynamic and intended hand moves.
+This enables the detection mechanism to be triggered by dynamic and intended hand moves.
 
 The further and more dynamically the hand goes to the border of the screen the bigger the velocity value, hence the block moves faster.   
 
