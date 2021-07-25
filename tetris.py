@@ -36,7 +36,7 @@ if DIFFICULTY_LVL == 3:
 elif DIFFICULTY_LVL == 3:
     FALLING_SPEED = 350
 else:
-    FALLING_SPEED = 1000
+    FALLING_SPEED = 500
 
 # Grid
 ROWS_N = parser.getint("screen", "rows_n")
@@ -339,7 +339,7 @@ def main():
                 msg = "Please move your hand to the camera"
     counter = 3
     while counter:
-        msg = "Staring game in {}". format(counter)
+        msg = "Starting game in {}". format(counter)
         draw_window_waiting_window(msg)
         counter -= 1
         pygame.time.delay(500)
