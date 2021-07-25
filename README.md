@@ -23,7 +23,7 @@ https://user-images.githubusercontent.com/65562440/126897676-444513e3-22ee-4a64-
 
 
 ## Rotation detection
-Based on detected landmarks gestures and moves can be calculated. Rotation is detected based on angle between wrist and middle finger. If the angle is above some treshold the gesture can be detected. It is important to correct the angle thresholds based on current hand possition, as there arise natural bend as the user moves the hand to the one side of the screen. Additionally there is default angle thresholds correction implemented in one side, as it can be easier to bend the hand to one of the sides depending one the user handedness. Additional angle boundary (green on the video) is necessary to enable rotation move again after detection. The angle settings can be configured in config.txt
+Based on detected landmarks gestures and moves can be calculated. Rotation is detected based on angle between wrist, middle finger tip and (wrist x, 0) point. If the angle is above some treshold the gesture can be detected. It is important to correct the angle thresholds based on current hand possition, as there arise natural bend as the user moves the hand to the one side of the screen. Additionally there is default angle thresholds correction implemented in one side, as it can be easier to bend the hand to one of the sides depending one the user handedness. Additional angle boundary (green on the video) is necessary to enable rotation move again after detection. The angle settings can be configured in config.txt
 
 https://user-images.githubusercontent.com/65562440/126897647-3924ca33-4633-4e23-9ac6-983caa51b7de.mp4
 
