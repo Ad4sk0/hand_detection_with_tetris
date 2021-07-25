@@ -15,18 +15,23 @@ rows_n=15
 cols_n=10
 grid_line_width=1
 
-[detection]
+[hand_detection]
 detection_con=0.6
 track_con=0.6
+
+[moves_detection]
 default_angle_correction=5
-draw_rotation_helpers=True
-draw_moves_helpers=False
-draw_landmarks=True
-draw_on_white_card=True
-show_fps=False
 enable_move_degrees_threshold=23
 move_degrees_threshold=30
 max_degrees_correction=60
 dynamic_center_position=True
 move_to_center_ratio=3
+time_delay_after_floor_hit=1000
+
+[detection_gui]
+draw_rotation_helpers=False
+draw_moves_helpers=True
+draw_landmarks=True
+draw_on_white_card=True
+show_fps=False
 

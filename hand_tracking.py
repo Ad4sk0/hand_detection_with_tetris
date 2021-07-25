@@ -6,6 +6,7 @@ import mediapipe as mp
 import numpy as np
 from utils import calculate_fps
 import configparser
+import time
 
 # TODO make the detection work better in bad light conditions
 
@@ -15,6 +16,9 @@ parser.read("config.txt")
 WIDTH = parser.getint("screen", "width")
 HEIGHT = parser.getint("screen", "height")
 
+WAIT_DELAY = False
+PREV_TIME = 0
+
 
 def draw_landmarks_on_img(img, landmarks):
     mpDraw = mp.solutions.drawing_utils
@@ -23,20 +27,32 @@ def draw_landmarks_on_img(img, landmarks):
         mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
 
 
+def set_wait_delay():
+    global WAIT_DELAY
+    global PREV_TIME
+    WAIT_DELAY = True
+    PREV_TIME = round(time.time() * 1000)
+
+
 def main(events=None):
+    global WAIT_DELAY
+    global PREV_TIME
+    time_waited = 0
+    time_delay_after_floor_hit = parser.getint("moves_detection", "time_delay_after_floor_hit")
+
     hand_detector = handDetector(
-        detection_con=parser.getfloat("detection", "detection_con"),
-        track_con=parser.getfloat("detection", "track_con")
+        detection_con=parser.getfloat("hand_detection", "detection_con"),
+        track_con=parser.getfloat("hand_detection", "track_con")
     )
     moves_detector = movesDetector(
-        draw_rotation_helpers=parser.getboolean("detection", "draw_rotation_helpers"),
-        draw_moves_helpers=parser.getboolean("detection", "draw_moves_helpers"),
-        default_angle_correction=parser.getint("detection", "default_angle_correction")
+        draw_rotation_helpers=parser.getboolean("detection_gui", "draw_rotation_helpers"),
+        draw_moves_helpers=parser.getboolean("detection_gui", "draw_moves_helpers"),
+        default_angle_correction=parser.getint("moves_detection", "default_angle_correction")
     )
 
-    draw_landmarks = parser.getboolean("detection", "draw_landmarks")
-    show_fps = parser.getboolean("detection", "show_fps"),
-    draw_on_white_card = parser.getboolean("detection", "draw_on_white_card"),
+    draw_landmarks = parser.getboolean("detection_gui", "draw_landmarks")
+    show_fps = parser.getboolean("detection_gui", "show_fps")
+    draw_on_white_card = parser.getboolean("detection_gui", "draw_on_white_card")
 
     p_time = 0
     cap = cv2.VideoCapture(0)
@@ -45,6 +61,16 @@ def main(events=None):
     while True:
         success, img = cap.read()
         img = cv2.flip(img, 1)
+
+        # Add small delay after block hits the floor or another block in order to avoid unintentional moves
+        if WAIT_DELAY:
+            current_time = round(time.time() * 1000)
+            diff = current_time - PREV_TIME
+            time_waited += diff
+            PREV_TIME = current_time
+            if time_waited >= time_delay_after_floor_hit:
+                time_waited = 0
+                WAIT_DELAY = False
 
         # For bad light conditions - experiment with it
         # alpha = 1.05  # Contrast control (1.0-3.0)
@@ -74,7 +100,7 @@ def main(events=None):
                 pygame.event.post(events["no_hand_detected"])
             else:
                 pygame.event.post(events["hand_detected"])
-            if move:
+            if move and not WAIT_DELAY:
                 pygame.event.post(events[move])
 
         # Calculate fps

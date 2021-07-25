@@ -36,7 +36,7 @@ if DIFFICULTY_LVL == 3:
 elif DIFFICULTY_LVL == 3:
     FALLING_SPEED = 350
 else:
-    FALLING_SPEED = 500
+    FALLING_SPEED = 1000
 
 # Grid
 ROWS_N = parser.getint("screen", "rows_n")
@@ -67,6 +67,7 @@ SHAPES = {
     "Z": [[1, 1, 0],
           [0, 1, 1]],
 }
+
 colors = [
     (255, 0, 0),
     (0, 255, 0),
@@ -122,6 +123,7 @@ events = {
 class HandDetectionThread(threading.Thread):
     def __init__(self):
         super().__init__()
+        self.event = threading.Event()
 
     def run(self):
         hand_tracking.main(events)
@@ -410,6 +412,7 @@ def main():
             previous_shape_pos = []
             block = next_block  # get new block
             next_block = Block()
+            hand_tracking.set_wait_delay()
 
         # Touch floor
         elif block.y + block.h >= ROWS_N:
@@ -419,6 +422,8 @@ def main():
             occupied_fields_set.update(occupied_fields.keys())
             block = next_block  # get new block
             next_block = Block()
+            hand_tracking.set_wait_delay()
+
 
         # Move block downwards
         else:

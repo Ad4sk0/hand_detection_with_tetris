@@ -71,8 +71,8 @@ class movesDetector:
         returns False, string: rotate_clockwise or string: rotate_counterclockwise
         """
         # Thresholds
-        enable_move_degrees_threshold = parser.getint("detection", "enable_move_degrees_threshold")
-        move_degrees_threshold = parser.getint("detection", "move_degrees_threshold")
+        enable_move_degrees_threshold = parser.getint("moves_detection", "enable_move_degrees_threshold")
+        move_degrees_threshold = parser.getint("moves_detection", "move_degrees_threshold")
 
         # Point A = middle finger tip
         mf_id = 12
@@ -104,7 +104,7 @@ class movesDetector:
         # 60 degrees turned out to be natural hand bend when the hand is moved maximally to one side
         # BUT IT DEPENDS ON THE DISTANCE FROM CAMERA.
         # TODO make it dynamically based on distance
-        max_degrees_correction = parser.getint("detection", "max_degrees_correction")
+        max_degrees_correction = parser.getint("moves_detection", "max_degrees_correction")
         h, w, c = img.shape
         max_hand_reach = w // 2 - 20
         x1, y1 = (w // 2, h // 2)  # x1 and y2 are middle of the screen
@@ -176,12 +176,12 @@ class movesDetector:
         # Dynamic position should be better than static - if the user will not keep the hand in the middle of the screen
         # the length of the previous hand positions should be at least 150
         # TODO play with different prev positions lengths, max speed and min speed to make this most comfortable
-        dynamic_center_position = parser.getboolean("detection", "dynamic_center_position"),
+        dynamic_center_position = parser.getboolean("moves_detection", "dynamic_center_position"),
         if dynamic_center_position:
             # Adding center position to this temp list will prevent the center point from being close to the border
             # It will also save memory in contrast to increasing the size of the list
             # Increase of this value will result in more static centroid point
-            move_to_center_ratio = parser.getint("detection", "move_to_center_ratio")
+            move_to_center_ratio = parser.getint("moves_detection", "move_to_center_ratio")
             for _ in range(move_to_center_ratio):
                 self.last_hand_positions.insert((x1, y1))
             self.last_hand_positions.insert((x2, y2))
