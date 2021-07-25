@@ -12,7 +12,8 @@ See config.txt for configuration options.
 ### Control options
 There are three moves possible in Tetris:
 - **Move block left or right** - 
-Just move hand intensively to the left or right - the further is the move the faster the block goes to this side
+Just move hand intensively to the left or right - the further is the move the faster the block goes to this side. By just
+  moving hand to the side and quickly going back to previous position the block will move only by one field.
 - **Move block down** - 
 Works similar as left or down but this time move your hand to the bottom of the screen
 - **Rotate block** -
